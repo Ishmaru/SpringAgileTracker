@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,10 @@ public class UserRepositoryTest {
 		userRepository.save(testUser1);
 		User testUser2 = new User("Akari", "123abc", "akari@gmail.com");
 		userRepository.save(testUser2);
+	}
+	@After
+	public void tearDown() {
+		userRepository.deleteAll();
 	}
 	
 	@Test
