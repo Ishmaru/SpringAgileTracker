@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserServiceInt{
 	public String deleteById(Long id) {
 		String returnString = "";
 		try {
-			userRepository.deleteAll();
+			userRepository.deleteById(id);
 			returnString = "User Deleted";
 		}catch(Exception e) {
 			returnString = "Failed to Delete: \n" + e.getMessage();

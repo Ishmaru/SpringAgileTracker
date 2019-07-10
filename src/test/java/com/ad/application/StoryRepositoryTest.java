@@ -25,7 +25,6 @@ public class StoryRepositoryTest {
 		storyRepository.deleteAll();
 		testStory1 = new Story("Add unit testing", "As a developer i would like to add a test for my StoryRepository", "Passing all tests", 32, Iteration.BACKLOG);
 		storyRepository.save(testStory1);
-
 	}
 	
 	@Test
