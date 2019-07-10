@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ad.application.models.Story;
-import com.ad.application.services.StoryServiceImpl;
+import com.ad.application.model.Story;
+import com.ad.application.service.StoryServiceImpl;
 
 @RestController
 @RequestMapping(value="/api")
@@ -21,30 +21,23 @@ public class StoryController {
 	@Autowired
 	StoryServiceImpl storyService;
 	
-	@GetMapping(value="/story")
-	public List<Story> getIndex() {
-		return storyService.findAll();
+	@GetMapping(value="/user/{userId}/story")
+	public List<Story> getIndex(@PathVariable Long userId) {
+		return storyService.findAllById(userId);
 	}
 	
-	@GetMapping(value="/story/{id}")
-	public Story getOne(@PathVariable Long id){
+	@GetMapping(value="/user/{userId}/story/{id}")
+	public Story getOne( @PathVariable Long userId, @PathVariable Long id){
 		return storyService.findById(id);
 	}
 	
-	@PostMapping(value="/story")
-	public String getOne(Story story){
-		String returnString = "";
-		try {
-			storyService.addStory(story);
-			returnString = "Story Added";
-		}catch(Exception e) {
-			returnString = "Failed to Post: \n" + e.getMessage();
-		}
-		return returnString;
+	@PostMapping(value="/user/{userId}/story")
+	public String getOne(Story story, @PathVariable Long userId){
+		return storyService.addStory(story, userId);
 	}
 	
-	@PutMapping(value="/story/{id}")
-	public String update(Story story, @PathVariable Long id){
+	@PutMapping(value="user/{userId}/story/{id}")
+	public String update(Story story, @PathVariable Long userId, @PathVariable Long id){
 		return storyService.updateStory(story, id);
 	}
 	

@@ -13,10 +13,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.ad.application.models.User;
+import com.ad.application.model.User;
 import com.ad.application.repository.UserRepository;
-import com.ad.application.services.UserServiceImpl;
-import com.ad.application.services.UserServiceInt;
+import com.ad.application.service.UserServiceImpl;
+import com.ad.application.service.UserServiceInt;
 
 @RunWith(SpringRunner.class)
 public class UserServiceTest {

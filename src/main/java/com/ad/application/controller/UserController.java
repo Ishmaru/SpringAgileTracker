@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ad.application.models.User;
-import com.ad.application.services.UserServiceImpl;
+import com.ad.application.model.Story;
+import com.ad.application.model.User;
+import com.ad.application.service.UserServiceImpl;
 
 @RestController
 @RequestMapping(value="/api")
@@ -32,14 +33,7 @@ public class UserController {
 	
 	@PostMapping(value="/user")
 	public String getOne(User user){
-		String returnString = "";
-		try {
-			userService.addUser(user);
-			returnString = "User Added";
-		}catch(Exception e) {
-			returnString = "Failed to Post: \n" + e.getMessage();
-		}
-		return returnString;
+		return userService.addUser(user);
 	}
 	
 	@PutMapping(value="/user/{id}")
@@ -52,5 +46,12 @@ public class UserController {
 		return userService.deleteById(id);
 	}
 	
+	@PostMapping(value="/login")
+	public List<Story> login(User user){
+		System.out.println(user.getEmail());
+		System.out.println(user.getPassword());
+		return userService.authenticate(user.getEmail(), user.getPassword());
+	}
+
 	
 }

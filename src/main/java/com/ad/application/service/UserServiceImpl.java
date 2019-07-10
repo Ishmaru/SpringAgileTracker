@@ -1,11 +1,13 @@
-package com.ad.application.services;
+package com.ad.application.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ad.application.models.User;
+import com.ad.application.model.Story;
+import com.ad.application.model.User;
+import com.ad.application.repository.StoryRepository;
 import com.ad.application.repository.UserRepository;
 
 
@@ -16,6 +18,9 @@ public class UserServiceImpl implements UserServiceInt{
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	StoryRepository storyRepository;
+	
 	@Override
 	public User findByEmail(String email) {
 		return userRepository.findUserByEmail(email);
@@ -84,14 +89,21 @@ public class UserServiceImpl implements UserServiceInt{
 		return incoming != null ? incoming : current;
 	}
 
-
-//	public Boolean authenticate(String email, String password) {
-//		User tempUser = userRepository.findUserByEmail(email);
-//		if(tempUser.getPassword() == password) {
-//			return true;
-//		}
-//		return false;
-//	}
-
+	//Authentication
+	public List<Story> authenticate(String email, String password) {
+		User tempUser = userRepository.findUserByEmail(email);
+		System.out.println(password + "===============");
+		if(tempUser.getPassword().equals(password)) {
+			
+			return storyRepository.findAllByUserId(tempUser.getId());
+		}
+		return null;
+	}
+	
+	public Boolean ifPermission(Long id, String password) {
+		User tempUser = userRepository.findUserById(id);
+		return tempUser.getPassword().equals(password);
+	}
+	
 
 }

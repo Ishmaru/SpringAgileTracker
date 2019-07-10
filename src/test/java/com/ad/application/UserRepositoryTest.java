@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.ad.application.models.User;
+import com.ad.application.model.User;
 import com.ad.application.repository.UserRepository;
 
 

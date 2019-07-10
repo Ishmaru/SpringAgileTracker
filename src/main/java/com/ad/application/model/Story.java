@@ -1,4 +1,4 @@
-package com.ad.application.models;
+package com.ad.application.model;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,9 +24,17 @@ public class Story {
 	private String userStory;
 	private String actionCriteria;
 	private Integer points;
-	@NotEmpty
 	@Enumerated(EnumType.STRING)
 	private Iteration sprintIteration;
+	
+	private Long userId;
+	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public String getUserStory() {
 		return userStory;
 	}
@@ -61,12 +69,18 @@ public class Story {
 		return id;
 	}
 	public Story(@NotEmpty String title, String userStory, String actionCriteria, Integer points,
-			@NotEmpty Iteration sprintIteration) {
+		Iteration sprintIteration, Long userId) {
 		this.title = title;
 		this.userStory = userStory;
 		this.actionCriteria = actionCriteria;
 		this.points = points;
-		this.sprintIteration = sprintIteration;
+		if(sprintIteration != null) {
+			this.sprintIteration = sprintIteration;
+		}else {
+			this.sprintIteration = Iteration.BACKLOG;
+		}
+
+		this.userId = userId;
 	}
 	public Story() {
 	}
