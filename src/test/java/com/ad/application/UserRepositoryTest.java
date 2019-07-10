@@ -46,5 +46,4 @@ public class UserRepositoryTest {
 		List<User> results = userRepository.findAll();
 		assertThat(2).isEqualTo(results.size());
 	}
-
 }

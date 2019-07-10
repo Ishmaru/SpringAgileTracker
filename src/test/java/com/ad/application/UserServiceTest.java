@@ -41,6 +41,7 @@ public class UserServiceTest {
 	public void setUp() {
 		newUser = new User("Bill", "bill@yahoo.com", "abc123");
 		Mockito.when(userRepository.findUserByEmail(newUser.getEmail())).thenReturn(newUser);
+		Mockito.when(userRepository.findUserById(1L)).thenReturn(newUser);
 	}
 	@After
 	public void tearDown() {
@@ -51,6 +52,12 @@ public class UserServiceTest {
 		String email = "bill@yahoo.com";
 		User found = userServiceImpl.findByEmail("bill@yahoo.com");
 		assertThat(email).isEqualTo(found.getEmail());
+	}
+	@Test
+	public void whenPutNull_ThenUsePreviousValue() {
+		String email = userServiceImpl.findById(1L).getEmail();
+		UserServiceImpl.validateUpdate(null, userServiceImpl.findById(1L).getEmail());
+		assertThat(email).isNotNull();
 	}
 
 

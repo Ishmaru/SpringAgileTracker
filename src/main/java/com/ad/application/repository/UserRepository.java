@@ -11,5 +11,6 @@ import com.ad.application.models.User;
 public interface UserRepository extends CrudRepository<User, Long> {
 	public List<User> findAll();
 	public User findUserByEmail(String email);
+	public User findUserById(Long id);
 
 }
