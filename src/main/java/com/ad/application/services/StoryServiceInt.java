@@ -10,4 +10,5 @@ public interface StoryServiceInt {
 	String deleteById(Long id);
 	String addStory(Story story);
 	String updateStory(Story story, Long id);
+	String updateIteration(Story story, Long id);
 }
