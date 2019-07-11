@@ -9,6 +9,7 @@ class Main extends React.Component {
     return (
       <div>
         <div className="">
+          <h1>Krazy Keet Games Agile Dev tracker!</h1>
           <h5 className="" >Lets Add some Tasks:</h5>
           <button className="waves-effect waves-light btn" onClick={handleClick}>Add Task</button>
         </div>
@@ -128,7 +129,11 @@ class CompleteList extends React.Component {
 }
 
 const filterBy = (props, filter) => {
-  return props.filter(item => item.sprintIteration === filter);
+  try {
+    return props.filter(item => item.sprintIteration === filter); 
+  } catch(error) {
+    return [];
+  }
 }
 
 const changeIteration = (event) => {
@@ -158,40 +163,49 @@ const dropdown = (event) => {
 }
 
 const listItems = (props) => {
-  return(
-    props.map((item, index) =>
-      <div key={item.id}>
-        <div className="card blue-grey darken-1">
-          <div className="card-content white-text">
-            <span className="card-title">{item.title}</span>
-            <p>{item.userStory}</p>
-            <p>{item.actionCriteria}</p>
-            <p className="col s3">{item.points}</p>
-            <div className="col s9 row">
-              <button className="waves-effect waves-light btn col s12" onClick={dropdown}>Send To:</button>
-              <ul id={item.id} className="drop hide">
-                <li>
-                  <button id="backlog" className="waves-effect waves-light btn col s12" onClick={changeIteration}>Backlog</button>
-                </li>
-                <li>
-                  <button id="sprint" className="waves-effect waves-light btn col s12" onClick={changeIteration}>Sprint</button>
-                </li>
-                <li>
-                  <button id="testing" className="waves-effect waves-light btn col s12" onClick={changeIteration}>Testing</button>
-                </li>
-                <li>
-                  <button id="complete" className="waves-effect waves-light btn col s12" onClick={changeIteration}>Complete</button>
-                </li>
-                <li>
-                  <button id="delete" className="waves-effect waves-light btn col s12" onClick={deleteStory}>Delete</button>
-                </li>
-              </ul>
+  try{
+    return(
+      props.map((item, index) =>
+        <div key={item.id}>
+          <div className="card blue-grey darken-1">
+            <div className="card-content white-text">
+              <span className="card-title">{item.title}</span>
+              <p>{item.userStory}</p>
+              <p>{item.actionCriteria}</p>
+              <p className="col s3">{item.points}</p>
+              <div className="col s9 row">
+                <button className="waves-effect waves-light btn col s12" onClick={dropdown}>Send To:</button>
+                <ul id={item.id} className="drop hide">
+                  <li>
+                    <button id="backlog" className="waves-effect waves-light btn col s12 grey" onClick={changeIteration}>Backlog</button>
+                  </li>
+                  <li>
+                    <button id="sprint" className="waves-effect waves-light btn col s12 grey" onClick={changeIteration}>Sprint</button>
+                  </li>
+                  <li>
+                    <button id="testing" className="waves-effect waves-light btn col s12 grey" onClick={changeIteration}>Testing</button>
+                  </li>
+                  <li>
+                    <button id="complete" className="waves-effect waves-light btn col s12 grey" onClick={changeIteration}>Complete</button>
+                  </li>
+                  <li>
+                    <button id="delete" className="waves-effect waves-light btn col s12 deep-orange" onClick={deleteStory}>Delete</button>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
+      )
+    ); 
+  }catch(error){
+    return(
+      <div className="container">
+        <h3>No tasks posted yet.</h3>
+        <p>Click 'Add Task' and start planning!</p>
       </div>
-    )
-  );
+    );
+  }
 }
 
 fetch("/api/story")

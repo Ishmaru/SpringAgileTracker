@@ -50,20 +50,19 @@ public class StoryServiceTest {
 	@Test
 	public void whenGivenSimilar_thenRejectAddingToDB() {
 		Story newStory2 = new Story("Add unit testing", "As a user i would like to see this similar message return a rejection message", "Passing test", 8, Iteration.SPRINT, 1L);
-		String message = storyServiceImpl.addStory(newStory2);
+		String message = storyServiceImpl.addStory(newStory2, "BACKLOG");
 		assertThat("Similar story already exits").isEqualTo(message);
 	}
 	@Test
 	public void whenGivenUnique_thenAddToDB() {
 		Story newStory2 = new Story("Quality Code", "As a user i want to make sure this app will not fail", "Passing test", 8, Iteration.TESTING, 1L);
-		String message = storyServiceImpl.addStory(newStory2);
+		String message = storyServiceImpl.addStory(newStory2, "BACKLOG");
 		assertThat("Story Added").isEqualTo(message);
 	}
 	@Test
 	public void whenPutIteraton_Sucess() {
-		Story newStory2 = new Story(null, "As a user i want to be able to switch Iteration", null, null, null, null);
-		String message = storyServiceImpl.updateIteration(newStory2, newStory.getId());
-		assertThat("Iteration Updated").isEqualTo(message);
+		String message = storyServiceImpl.updateIteration(newStory.getId(), "sprint");
+		assertThat(message).isEqualTo("Iteration Updated");
 	}
 
 }
