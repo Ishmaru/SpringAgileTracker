@@ -47,9 +47,11 @@ public class UserController {
 	}
 	
 	@PostMapping(value="/login")
+	public List<Story> addUser(User user){
+		return userService.authenticate(user.getEmail(), user.getPassword());
+	}
+	@PutMapping(value="/login")
 	public List<Story> login(User user){
-		System.out.println(user.getEmail());
-		System.out.println(user.getPassword());
 		return userService.authenticate(user.getEmail(), user.getPassword());
 	}
 

@@ -92,9 +92,7 @@ public class UserServiceImpl implements UserServiceInt{
 	//Authentication
 	public List<Story> authenticate(String email, String password) {
 		User tempUser = userRepository.findUserByEmail(email);
-		System.out.println(password + "===============");
 		if(tempUser.getPassword().equals(password)) {
-			
 			return storyRepository.findAllByUserId(tempUser.getId());
 		}
 		return null;
