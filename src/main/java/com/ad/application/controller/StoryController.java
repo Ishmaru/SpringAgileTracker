@@ -3,6 +3,7 @@ package com.ad.application.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,23 +22,23 @@ public class StoryController {
 	@Autowired
 	StoryServiceImpl storyService;
 	
-	@GetMapping(value="/user/{userId}/story")
-	public List<Story> getIndex(@PathVariable Long userId) {
-		return storyService.findAllById(userId);
+	@GetMapping(value="/story")
+	public List<Story> getIndex() {
+		return storyService.findAllStories();
 	}
 	
-	@GetMapping(value="/user/{userId}/story/{id}")
-	public Story getOne( @PathVariable Long userId, @PathVariable Long id){
+	@GetMapping(value="/story/{id}")
+	public Story getOne(@PathVariable Long id){
 		return storyService.findById(id);
 	}
-	
-	@PostMapping(value="/user/{userId}/story")
-	public String getOne(Story story, @PathVariable Long userId){
-		return storyService.addStory(story, userId);
+	@CrossOrigin
+	@PostMapping(value="/story/{iteration}")
+	public String addStory(Story story, @PathVariable String iteration){
+		return storyService.addStory(story, iteration);
 	}
 	
-	@PutMapping(value="user/{userId}/story/{id}")
-	public String update(Story story, @PathVariable Long userId, @PathVariable Long id){
+	@PutMapping(value="/story/{id}")
+	public String update(Story story, @PathVariable Long id){
 		return storyService.updateStory(story, id);
 	}
 	

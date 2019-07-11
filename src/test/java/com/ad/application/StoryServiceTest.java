@@ -1,7 +1,6 @@
 package com.ad.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ad.application.model.Story;
-import com.ad.application.model.User;
 import com.ad.application.model.Story.Iteration;
 import com.ad.application.repository.StoryRepository;
 import com.ad.application.service.StoryServiceImpl;
@@ -52,13 +50,13 @@ public class StoryServiceTest {
 	@Test
 	public void whenGivenSimilar_thenRejectAddingToDB() {
 		Story newStory2 = new Story("Add unit testing", "As a user i would like to see this similar message return a rejection message", "Passing test", 8, Iteration.SPRINT, 1L);
-		String message = storyServiceImpl.addStory(newStory2, 1L);
+		String message = storyServiceImpl.addStory(newStory2);
 		assertThat("Similar story already exits").isEqualTo(message);
 	}
 	@Test
 	public void whenGivenUnique_thenAddToDB() {
 		Story newStory2 = new Story("Quality Code", "As a user i want to make sure this app will not fail", "Passing test", 8, Iteration.TESTING, 1L);
-		String message = storyServiceImpl.addStory(newStory2, 1L);
+		String message = storyServiceImpl.addStory(newStory2);
 		assertThat("Story Added").isEqualTo(message);
 	}
 	@Test

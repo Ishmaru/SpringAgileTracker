@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ad.application.model.Story;
-import com.ad.application.model.User;
 import com.ad.application.model.Story.Iteration;
 import com.ad.application.repository.StoryRepository;
-import com.ad.application.repository.UserRepository;
 
 @Service
 public class StoryServiceImpl  implements StoryServiceInt{
@@ -17,12 +15,11 @@ public class StoryServiceImpl  implements StoryServiceInt{
 	@Autowired
 	StoryRepository storyRepository;
 	
-	@Autowired
-	UserRepository userRepository;
 	
 	@Override
-	public List<Story> findAllById(Long userId) {
-		return storyRepository.findAllByUserId(userId);
+	public List<Story> findAllStories() {
+		System.out.println(storyRepository.findAll().get(0));
+		return storyRepository.findAll();
 	}
 
 	@Override
@@ -43,11 +40,21 @@ public class StoryServiceImpl  implements StoryServiceInt{
 	}
 
 	@Override
-	public String addStory(Story story, Long userId) {
+	public String addStory(Story story, String iteration) {
 		String returnString = "";
 		if(storyRepository.findStoryByTitle(story.getTitle()) == null) {
 			try {
-				story.setUserId(userId);
+				if(iteration.equals("backlog")) {
+					story.setSprintIteration(Iteration.BACKLOG);
+				}else if(iteration.equals("sprint")) {
+					story.setSprintIteration(Iteration.SPRINT);
+				}else if(iteration.equals("testing")) {
+					story.setSprintIteration(Iteration.TESTING);
+				}else if(iteration.equals("complete")) {
+					story.setSprintIteration(Iteration.COMPLETE);
+				} else {
+					return "failed to post";
+				}
 				storyRepository.save(story);
 				returnString = "Story Added";
 			}catch(Exception e) {
@@ -69,13 +76,13 @@ public class StoryServiceImpl  implements StoryServiceInt{
 			String tempUserStory = validateUpdate(story.getUserStory(), update.getUserStory());
 			String tempActionCriteria = validateUpdate(story.getActionCriteria(), update.getActionCriteria());
 			Integer tempPoints = validateUpdate(story.getPoints(), update.getPoints());
-			Iteration tempIteration = validateUpdate(story.getSprintIteration(), update.getSprintIteration());
+//			Iteration tempIteration = validateUpdate(story.getSprintIteration(), update.getSprintIteration());
 
 			update.setTitle(tempTitle);
 			update.setUserStory(tempUserStory);
 			update.setActionCriteria(tempActionCriteria);
 			update.setPoints(tempPoints);
-			update.setSprintIteration(tempIteration);
+//			update.setSprintIteration(tempIteration);
 			
 			storyRepository.save(update);
 			

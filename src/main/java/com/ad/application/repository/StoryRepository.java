@@ -9,6 +9,6 @@ import com.ad.application.model.Story;
 @Repository
 public interface StoryRepository extends CrudRepository<Story, Long> {
 	public Story findStoryById(Long id);
-	public List<Story> findAllByUserId(Long userId);
+	public List<Story> findAll();
 	public Story findStoryByTitle(String title);
 }
