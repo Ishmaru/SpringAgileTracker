@@ -39,22 +39,24 @@ public class StoryServiceImpl  implements StoryServiceInt{
 		return returnString;
 	}
 
+	private Iteration getIterationFromString(String iteration) {
+		Iteration tempIteration = Iteration.BACKLOG;
+		if(iteration.equals("sprint")) {
+			tempIteration = Iteration.SPRINT;
+		}else if(iteration.equals("testing")) {
+			tempIteration = Iteration.TESTING;
+		}else if(iteration.equals("complete")) {
+			tempIteration = Iteration.COMPLETE;
+		}
+		return tempIteration;
+	}
+	
 	@Override
 	public String addStory(Story story, String iteration) {
 		String returnString = "";
 		if(storyRepository.findStoryByTitle(story.getTitle()) == null) {
 			try {
-				if(iteration.equals("backlog")) {
-					story.setSprintIteration(Iteration.BACKLOG);
-				}else if(iteration.equals("sprint")) {
-					story.setSprintIteration(Iteration.SPRINT);
-				}else if(iteration.equals("testing")) {
-					story.setSprintIteration(Iteration.TESTING);
-				}else if(iteration.equals("complete")) {
-					story.setSprintIteration(Iteration.COMPLETE);
-				} else {
-					return "failed to post";
-				}
+				story.setSprintIteration(getIterationFromString(iteration));
 				storyRepository.save(story);
 				returnString = "Story Added";
 			}catch(Exception e) {
@@ -94,13 +96,12 @@ public class StoryServiceImpl  implements StoryServiceInt{
 	}
 
 	@Override
-	public String updateIteration(Story story, Long id) {
+	public String updateIteration(Long id, String iteration) {
 		String returnString = "";
 		try {
 			Story update = storyRepository.findStoryById(id);
 
-			update.setSprintIteration(story.getSprintIteration());
-
+			update.setSprintIteration(getIterationFromString(iteration));
 			storyRepository.save(update);
 			
 			returnString = "Iteration Updated";

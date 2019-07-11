@@ -1,7 +1,4 @@
-// document.addEventListener('DOMContentLoaded', function() {
-//   var elems = document.querySelectorAll('.modal');
-//   var instances = M.Modal.init(elems, options);
-// });
+
 
 class Main extends React.Component {
   constructor(props){
@@ -11,11 +8,15 @@ class Main extends React.Component {
   render(){
     return (
       <div>
+        <div className="">
+          <h5 className="" >Lets Add some Tasks:</h5>
+          <button className="waves-effect waves-light btn" onClick={handleClick}>Add Task</button>
+        </div>
         <div className="row">
-          <div className="col m3 s6"><h5>Backlog</h5><button id="backlog" className="waves-effect waves-light btn" onClick={handleClick}>+</button></div>
-          <div className="col m3 s6"><h5>Sprint</h5><button id="sprint" className="waves-effect waves-light btn" onClick={handleClick}>+</button></div>
-          <div className="col m3 s6"><h5>Testing</h5><button id="testing" className="waves-effect waves-light btn" onClick={handleClick}>+</button></div>
-          <div className="col m3 s6"><h5>Complete</h5><button id="complete" className="waves-effect waves-light btn" onClick={handleClick}>+</button></div>
+          <div className="col m3 s6"><h5>Backlog</h5></div>
+          <div className="col m3 s6"><h5>Sprint</h5></div>
+          <div className="col m3 s6"><h5>Testing</h5></div>
+          <div className="col m3 s6"><h5>Complete</h5></div>
         </div>
         <Form/>
         <div className="row">
@@ -36,12 +37,8 @@ class Main extends React.Component {
     );
   }
 }
-//<a class="waves-effect waves-light btn modal-trigger" href="#modal1">+</a>
-// <button className="waves-effect waves-light btn" onClick={handleClick}>+</button>
 
 const handleClick = (event) =>{
-  console.log(event.target.id);
-  // return form(event.target.id);
   document.getElementById("formfields").className = "container";
 }
 
@@ -77,29 +74,13 @@ const Form = (props) => {
 
 const formSubmit = (event) =>{
   event.preventDefault();
-  // const data = new URLSearchParams();
-  // for (const pair of new FormData(event.target)) {
-  //     data.append(pair[0], pair[1]);
-  // }
-  // let data = new FormData();
-  // // data.append("title", document.getElementById("title").value);
-  // // data.append("userStory", document.getElementById("userStory").value);
-  // // data.append("points", document.getElementById("points").value);
-  // // data.append("actionCriteria", document.getElementById("actionCriteria").value);
-  // data.append("title", "FUCKYOU");
-  // data.append("userStory", "FUCKYOU");
-  // data.append("points", "FUCKYOU");
-  // data.append("actionCriteria", "FUCKYOU");
-  // "title" document.getElementById("title").value
-  // console.log(data);
   let postdata = "title="+document.getElementById("title").value+"&userStory="+document.getElementById("userStory").value+"&actionCriteria="+document.getElementById("actionCriteria").value+ "&points="+ document.getElementById("points").value;
   fetch("/api/story/backlog", {method:"POST",
    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
    body: postdata
   }).then(function(response) {
-    console.log(response);
-});
-
+   
+  }).then(location.reload());
 }
 
 class BacklogList extends React.Component {
@@ -147,22 +128,55 @@ class CompleteList extends React.Component {
 }
 
 const filterBy = (props, filter) => {
-  console.log(props);
-  console.log(filter);
   return props.filter(item => item.sprintIteration === filter);
+}
+
+const changeIteration = (event) => {
+  event.preventDefault();
+  fetch("/api/story/"+ event.target.parentElement.parentElement.id + "/" + event.target.id, {method:"PUT",
+   headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
+   body: ""
+  }).then(function(response) {
+   console.log(response);
+  }).then(location.reload());
+}
+
+const dropdown = (event) => {
+  let drop = event.target.nextSibling;
+  console.log(drop);
+  drop.classList.toggle("hide");
 }
 
 const listItems = (props) => {
   return(
     props.map((item, index) =>
-      <div key={index}>
+      <div key={item.id}>
         <div className="card blue-grey darken-1">
           <div className="card-content white-text">
             <span className="card-title">{item.title}</span>
             <p>{item.userStory}</p>
             <p>{item.actionCriteria}</p>
-            <p>{item.points}</p>
-            <p>{item.iteration}</p>
+            <p className="col s3">{item.points}</p>
+            <div className="col s9 row">
+              <button className="waves-effect waves-light btn col s12" onClick={dropdown}>Send To:</button>
+              <ul id={item.id} className="drop hide">
+                <li>
+                  <button id="backlog" className="waves-effect waves-light btn col s12" onClick={changeIteration}>Backlog</button>
+                </li>
+                <li>
+                  <button id="sprint" className="waves-effect waves-light btn col s12" onClick={changeIteration}>Sprint</button>
+                </li>
+                <li>
+                  <button id="testing" className="waves-effect waves-light btn col s12" onClick={changeIteration}>Testing</button>
+                </li>
+                <li>
+                  <button id="complete" className="waves-effect waves-light btn col s12" onClick={changeIteration}>Complete</button>
+                </li>
+                <li>
+                  <button id="delete" className="waves-effect waves-light btn col s12" onClick={changeIteration}>Delete</button>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -170,12 +184,6 @@ const listItems = (props) => {
   );
 }
 
-
-
-//fetch("/api/login", {method:"PUT",
-//  headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
-//  body: email=ishmaru@123abc.com&password=123abc
-//})
 fetch("/api/story")
 .then(function(response) {
   return response.json();

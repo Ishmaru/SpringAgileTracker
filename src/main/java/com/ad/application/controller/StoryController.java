@@ -42,6 +42,11 @@ public class StoryController {
 		return storyService.updateStory(story, id);
 	}
 	
+	@PutMapping(value="/story/{id}/{iteration}")
+	public String update(@PathVariable Long id, @PathVariable String iteration){
+		return storyService.updateIteration(id, iteration);
+	}
+	
 	@DeleteMapping(value="/story/{id}")
 	public String deleteStory(@PathVariable Long id){
 		return storyService.deleteById(id);
