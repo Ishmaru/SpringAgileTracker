@@ -141,6 +141,16 @@ const changeIteration = (event) => {
   }).then(location.reload());
 }
 
+const deleteStory = (event) => {
+  event.preventDefault();
+  fetch("/api/story/"+ event.target.parentElement.parentElement.id, {method:"DELETE",
+   headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
+   body: ""
+  }).then(function(response) {
+   console.log(response);
+  }).then(location.reload());
+}
+
 const dropdown = (event) => {
   let drop = event.target.nextSibling;
   console.log(drop);
@@ -173,7 +183,7 @@ const listItems = (props) => {
                   <button id="complete" className="waves-effect waves-light btn col s12" onClick={changeIteration}>Complete</button>
                 </li>
                 <li>
-                  <button id="delete" className="waves-effect waves-light btn col s12" onClick={changeIteration}>Delete</button>
+                  <button id="delete" className="waves-effect waves-light btn col s12" onClick={deleteStory}>Delete</button>
                 </li>
               </ul>
             </div>
